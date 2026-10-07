@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-NOCTI Practice Test | Medical Assisting (CIP 51.0801)</title>
+<style>
+  :root {
+    --primary: #0d6efd;
+    --primary-dark: #0a58ca;
+    --success: #198754;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6c757d;
+    --border: #dee2e6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  header h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  header p { opacity: 0.95; font-size: 0.95rem; }
+  .container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  .panel {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-bottom: 1.5rem;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .stat .value { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+  .stat .label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-bottom: 1.5rem; }
+  select, button {
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: white;
+    cursor: pointer;
+  }
+  button.primary { background: var(--primary); color: white; border-color: var(--primary); font-weight: 600; }
+  button.primary:hover { background: var(--primary-dark); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); width: 0%; transition: width 0.3s ease; }
+  .question { font-size: 1.15rem; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
+  .category-tag {
+    display: inline-block;
+    background: #e7f1ff;
+    color: var(--primary-dark);
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .options { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: white;
+  }
+  .option:hover:not(.disabled) { border-color: var(--primary); background: #f8fbff; }
+  .option.selected { border-color: var(--primary); background: #e7f1ff; }
+  .option.correct { border-color: var(--success); background: #d1e7dd; }
+  .option.incorrect { border-color: var(--danger); background: #f8d7da; }
+  .option.disabled { cursor: default; }
+  .option-letter { font-weight: 700; color: var(--primary); min-width: 1.5rem; flex-shrink: 0; }
+  .option.correct .option-letter { color: var(--success); }
+  .option.incorrect .option-letter { color: var(--danger); }
+  .feedback { margin-top: 1rem; padding: 1rem; border-radius: 10px; font-size: 0.95rem; display: none; }
+  .feedback.show { display: block; }
+  .feedback.correct { background: #d1e7dd; border-left: 4px solid var(--success); }
+  .feedback.incorrect { background: #f8d7da; border-left: 4px solid var(--danger); }
+  .feedback strong { display: block; margin-bottom: 0.25rem; }
+  .nav-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .results h2 { color: var(--primary); margin-bottom: 1rem; }
+  .results .score { font-size: 3rem; font-weight: 800; text-align: center; margin: 1rem 0; }
+  .results .score.pass { color: var(--success); }
+  .results .score.fail { color: var(--danger); }
+  .review-list { max-height: 500px; overflow-y: auto; margin-top: 1rem; }
+  .review-item { padding: 0.75rem; border-left: 4px solid var(--danger); background: #fff5f5; margin-bottom: 0.5rem; border-radius: 6px; font-size: 0.9rem; }
+  .review-item.correct { border-left-color: var(--success); background: #f0fff4; }
+  .review-item .q { font-weight: 600; margin-bottom: 0.25rem; }
+  .review-item .a { color: var(--muted); font-size: 0.85rem; }
+  .hidden { display: none; }
+  footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.85rem; }
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.3rem; }
+    .question { font-size: 1rem; }
+    .results .score { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pre-NOCTI Practice Test</h1>
+  <p>Medical Assisting &middot; CIP Code 51.0801 &middot; 300 Questions</p>
+</header>
+
+<div class="container">
+  <div id="start-screen" class="panel">
+    <h2 style="margin-bottom: 0.75rem;">Welcome to Your Practice Test</h2>
+    <p style="margin-bottom: 1rem; color: var(--muted);">
+      This practice test contains <strong>300 multiple-choice questions</strong> modeled after the NOCTI Medical Assisting
+      written assessment. Topics include medical terminology, anatomy, clinical procedures, infection control,
+      safety, administrative duties, and legal/ethical concepts.
+    </p>
+    <p style="margin-bottom: 1rem; color: var(--muted);">
+      Choose a mode below. Your progress is saved automatically in your browser so you can resume later.
+    </p>
+    <div class="controls">
+      <label for="mode-select" style="font-weight:600;">Mode:</label>
+      <select id="mode-select">
+        <option value="all">All 300 Questions (Full Exam)</option>
+        <option value="10">Quick Quiz — 10 Questions</option>
+        <option value="25">Short Quiz — 25 Questions</option>
+        <option value="50">Half Exam — 50 Questions</option>
+        <option value="100">Long Exam — 100 Questions</option>
+        <option value="category">Practice by Category</option>
+      </select>
+      <select id="category-select" class="hidden">
+        <option value="">-- Select Category --</option>
+      </select>
+      <button id="start-btn" class="primary">Start Test</button>
+      <button id="reset-btn">Reset Saved Progress</button>
+    </div>
+    <div id="saved-info" style="font-size:0.85rem; color: var(--muted); margin-top: 0.5rem;"></div>
+  </div>
+
+  <div id="quiz-screen" class="hidden">
+    <div class="stats">
+      <div class="stat"><div class="value" id="stat-q">1</div><div class="label">Question</div></div>
+      <div class="stat"><div class="value" id="stat-total">300</div><div class="label">Total</div></div>
+      <div class="stat"><div class="value" id="stat-correct">0</div><div class="label">Correct</div></div>
+      <div class="stat"><div class="value" id="stat-score">0%</div><div class="label">Score</div></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="panel">
+      <div class="category-tag" id="q-category">Category</div>
+      <div class="question" id="q-text">Question text</div>
+      <ul class="options" id="q-options"></ul>
+      <div class="feedback" id="q-feedback"></div>
+      <div class="nav-buttons">
+        <button id="prev-btn">← Previous</button>
+        <button id="next-btn" class="primary">Next →</button>
+        <button id="finish-btn" class="hidden">Finish Test</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="results-screen" class="hidden">
+    <div class="panel results">
+      <h2>Test Complete!</h2>
+      <div class="score" id="final-score">0%</div>
+      <p id="final-message" style="text-align:center; color: var(--muted); margin-bottom: 1rem;"></p>
+      <div class="stats">
+        <div class="stat"><div class="value" id="final-correct">0</div><div class="label">Correct</div></div>
+        <div class="stat"><div class="value" id="final-wrong">0</div><div class="label">Incorrect</div></div>
+        <div class="stat"><div class="value" id="final-total">0</div><div class="label">Total</div></div>
+      </div>
+      <h3 style="margin-top: 1rem;">Review Incorrect Answers</h3>
+      <div class="review-list" id="review-list"></div>
+      <div class="nav-buttons" style="justify-content:center; margin-top: 1.5rem;">
+        <button id="retry-btn" class="primary">Retake Test</button>
+        <button id="home-btn">Back to Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &copy; <span id="year"></span> Pre-NOCTI Practice Test &middot; For educational use only &middot; Not affiliated with NOCTI
+</footer>
+
+<script>
+/* ============================================================
+   QUESTION BANK — 300 Questions
+   ============================================================ */
+const QUESTIONS = [
+  // ===== MEDICAL TERMINOLOGY & ANATOMY (1–60) =====
+  {category:"Medical Terminology", question:"A patient has had a change of address. The medical assistant should:",
+   options:["Take a new photo of the patient for the medical record","Create a new patient medical record","Write a memo of the change and place it in the medical record","Update the new address in the medical record as soon as possible"],
+   answer:3, explanation:"The patient's record should be updated promptly to ensure accurate billing and communication."},
+  {category:"Medical Terminology", question:"The surgical removal of the gallbladder is known as a:",
+   options:["Lobectomy","Colectomy","Cholecystectomy","Gastrectomy"],
+   answer:2, explanation:"Cholecystectomy = removal of the gallbladder."},
+  {category:"Medical Terminology", question:"A patient with a diagnosis of hyperopia:",
+   options:["Is farsighted","Is nearsighted","Has a dry eye","Has a blocked tear duct"],
+   answer:0, explanation:"Hyperopia is farsightedness; myopia is nearsightedness."},
+  {category:"Anatomy & Physiology", question:"The heart and lungs are located in which body cavity?",
+   options:["Abdominal","Cranial","Thoracic","Spinal"],
+   answer:2, explanation:"The thoracic cavity contains the heart and lungs."},
+  {category:"Medical Terminology", question:"A blood clot that travels is commonly referred to as a/an:",
+   options:["Thrombus","Embolus","Embolism","Aneurysm"],
+   answer:1, explanation:"An embolus travels; a thrombus stays at its site of formation."},
+  {category:"Medical Terminology", question:"The prefix 'brady-' means:",
+   options:["Fast","Slow","Painful","Difficult"], answer:1, explanation:"'Brady-' means slow."},
+  {category:"Medical Terminology", question:"The suffix '-itis' means:",
+   options:["Inflammation","Removal","Enlargement","Pain"], answer:0, explanation:"'-itis' indicates inflammation."},
+  {category:"Medical Terminology", question:"The medical term for 'pertaining to the heart' is:",
+   options:["Hepatic","Cardiac","Renal","Pulmonary"], answer:1, explanation:"Cardiac = pertaining to the heart."},
+  {category:"Anatomy & Physiology", question:"The largest organ of the human body is the:",
+   options:["Liver","Skin","Brain","Lung"], answer:1, explanation:"The skin is the largest organ."},
+  {category:"Anatomy & Physiology", question:"How many bones are in the adult human body?",
+   options:["186","206","226","246"], answer:1, explanation:"The adult human skeleton has 206 bones."},
+  {category:"Vital Signs", question:"The normal resting adult heart rate is approximately:",
+   options:["20–40 bpm","40–60 bpm","60–100 bpm","100–140 bpm"], answer:2, explanation:"Normal adult resting heart rate is 60–100 bpm."},
+  {category:"Vital Signs", question:"The normal adult respiratory rate is:",
+   options:["6–10 breaths/min","12–20 breaths/min","22–30 breaths/min","30–40 breaths/min"], answer:1, explanation:"Normal adult respiratory rate is 12–20 breaths/min."},
+  {category:"Vital Signs", question:"The normal adult body temperature (oral) is approximately:",
+   options:["95.6°F (35.3°C)","98.6°F (37.0°C)","100.4°F (38.0°C)","102.2°F (39.0°C)"], answer:1, explanation:"Normal oral temperature is ~98.6°F (37.0°C)."},
+  {category:"Anatomy & Physiology", question:"Which blood vessel carries oxygenated blood away from the heart?",
+   options:["Vein","Artery","Capillary","Venule"], answer:1, explanation:"Arteries carry oxygenated blood away from the heart."},
+  {category:"Anatomy & Physiology", question:"The functional unit of the kidney is the:",
+   options:["Alveolus","Nephron","Neuron","Hepatocyte"], answer:1, explanation:"The nephron is the functional unit of the kidney."},
+  {category:"Anatomy & Physiology", question:"The functional unit of the lung is the:",
+   options:["Alveolus","Nephron","Neuron","Villus"], answer:0, explanation:"The alveolus is the gas-exchange unit of the lung."},
+  {category:"Anatomy & Physiology", question:"Which gland is known as the 'master gland'?",
+   options:["Thyroid","Adrenal","Pituitary","Pancreas"], answer:2, explanation:"The pituitary controls other endocrine glands."},
+  {category:"Anatomy & Physiology", question:"Insulin is produced by the:",
+   options:["Liver","Pancreas","Kidney","Spleen"], answer:1, explanation:"Insulin is produced by the beta cells of the pancreas."},
+  {category:"Anatomy & Physiology", question:"The medical term for the collarbone is:",
+   options:["Scapula","Clavicle","Sternum","Humerus"], answer:1, explanation:"The clavicle is the collarbone."},
+  {category:"Anatomy & Physiology", question:"The medical term for the kneecap is:",
+   options:["Patella","Tibia","Fibula","Femur"], answer:0, explanation:"The patella is the kneecap."},
+  {category:"Medical Terminology", question:"The abbreviation 'NPO' means:",
+   options:["Nothing by mouth","Normal physical output","New patient order","No pain observed"], answer:0, explanation:"NPO = nil per os = nothing by mouth."},
+  {category:"Medical Terminology", question:"The abbreviation 'BID' means:",
+   options:["Once a day","Twice a day","Three times a day","Four times a day"], answer:1, explanation:"BID = twice a day."},
+  {category:"Medical Terminology", question:"The abbreviation 'TID' means:",
+   options:["Once a day","Twice a day","Three times a day","Four times a day"], answer:2, explanation:"TID = three times a day."},
+  {category:"Medical Terminology", question:"The abbreviation 'QID' means:",
+   options:["Once a day","Twice a day","Three times a day","Four times a day"], answer:3, explanation:"QID = four times a day."},
+  {category:"Medical Terminology", question:"The abbreviation 'PRN' means:",
+   options:["As needed","By mouth","After meals","Before meals"], answer:0, explanation:"PRN = as needed."},
+  {category:"Medical Terminology", question:"The abbreviation 'PO' means:",
+   options:["As needed","By mouth","After meals","Before meals"], answer:1, explanation:"PO = by mouth."},
+  {category:"Medical Terminology", question:"The abbreviation 'AC' means:",
+   options:["Before meals","After meals","At bedtime","Every hour"], answer:0, explanation:"AC = before meals."},
+  {category:"Medical Terminology", question:"The abbreviation 'PC' means:",
+   options:["Before meals","After meals","At bedtime","Every hour"], answer:1, explanation:"PC = after meals."},
+  {category:"Medical Terminology", question:"The abbreviation 'HS' means:",
+   options:["Hour of sleep / at bedtime","Half strength","Heart sounds","Hospital stay"], answer:0, explanation:"HS = at bedtime."},
+  {category:"Medical Terminology", question:"The abbreviation 'BP' means:",
+   options:["Blood panel","Blood pressure","Body position","Bowel pattern"], answer:1, explanation:"BP = blood pressure."},
+  {category:"Medical Terminology", question:"The abbreviation 'HR' means:",
+   options:["Heart rate","Health record","High risk","Hospital referral"], answer:0, explanation:"HR = heart rate."},
+  {category:"Medical Terminology", question:"The abbreviation 'RR' means:",
+   options:["Respiratory rate","Renal reflux","Rapid response","Rheumatoid reflex"], answer:0, explanation:"RR = respiratory rate."},
+  {category:"Medical Terminology", question:"The abbreviation 'T' when recording vital signs means:",
+   options:["Temperature","Tension","Time","Tolerance"], answer:0, explanation:"T = temperature."},
+  {category:"Medical Terminology", question:"The abbreviation 'WBC' means:",
+   options:["White blood cell","Whole blood count","Wound bacterial culture","Warm blood cell"], answer:0, explanation:"WBC = white blood cell."},
+  {category:"Medical Terminology", question:"The abbreviation 'RBC' means:",
+   options:["Red blood cell","Rapid blood count","Renal blood cell","Right blood culture"], answer:0, explanation:"RBC = red blood cell."},
+  {category:"Medical Terminology", question:"The abbreviation 'Hgb' means:",
+   options:["Hemoglobin","Hematocrit","Hydrogen balance","Hepatic glucose"], answer:0, explanation:"Hgb = hemoglobin."},
+  {category:"Medical Terminology", question:"The abbreviation 'Hct' means:",
+   options:["Hemoglobin","Hematocrit","Hydrogen count","Heart rate"], answer:1, explanation:"Hct = hematocrit."},
+  {category:"Medical Terminology", question:"The abbreviation 'UA' means:",
+   options:["Urinalysis","Upper airway","Universal alert","Uterine artery"], answer:0, explanation:"UA = urinalysis."},
+  {category:"Medical Terminology", question:"The abbreviation 'ECG' or 'EKG' means:",
+   options:["Electrocardiogram","Electroencephalogram","Echocardiogram","Electromyogram"], answer:0, explanation:"ECG/EKG = electrocardiogram."},
+  {category:"Medical Terminology", question:"The abbreviation 'EEG' means:",
+   options:["Electrocardiogram","Electroencephalogram","Echocardiogram","Electromyogram"], answer:1, explanation:"EEG = electroencephalogram."},
+  {category:"Medical Terminology", question:"The abbreviation 'SOB' means:",
+   options:["Shortness of breath","Sudden onset of bleeding","Severe orthopedic burn","Systolic overload"], answer:0, explanation:"SOB = shortness of breath."},
+  {category:"Medical Terminology", question:"The abbreviation 'CPR' means:",
+   options:["Cardiopulmonary resuscitation","Cardiac pressure relief","Central pulse rate","Complete patient review"], answer:0, explanation:"CPR = cardiopulmonary resuscitation."},
+  {category:"Medical Terminology", question:"The abbreviation 'Rx' means:",
+   options:["Prescription","Treatment","Diagnosis","Refill"], answer:0, explanation:"Rx = prescription."},
+  {category:"Medical Terminology", question:"The abbreviation 'Dx' means:",
+   options:["Diagnosis","Dosage","Discharge","Dressing"], answer:0, explanation:"Dx = diagnosis."},
+  {category:"Medical Terminology", question:"The abbreviation 'Tx' means:",
+   options:["Treatment","Diagnosis","Temperature","Toxicology"], answer:0, explanation:"Tx = treatment."},
+  {category:"Medical Terminology", question:"The abbreviation 'Hx' means:",
+   options:["History","Hematocrit","Hypertension","Hospital"], answer:0, explanation:"Hx = history."},
+  {category:"Medical Terminology", question:"The abbreviation 'Fx' means:",
+   options:["Fracture","Function","Fever","Fasting"], answer:0, explanation:"Fx = fracture."},
+  {category:"Medical Terminology", question:"The abbreviation 'NKA' means:",
+   options:["No known allergies","New kidney assignment","Normal kidney activity","No known asthma"], answer:0, explanation:"NKA = no known allergies."},
+  {category:"Medical Terminology", question:"The abbreviation 'DOB' means:",
+   options:["Date of birth","Date of billing","Doctor's order book","Diagnosis of bronchitis"], answer:0, explanation:"DOB = date of birth."},
+  {category:"Medical Terminology", question:"The abbreviation 'AMA' can mean:",
+   options:["Against medical advice","American Medical Association","Both of the above","Advanced medical assistance"], answer:2, explanation:"AMA = Against Medical Advice or American Medical Association."},
+  {category:"Anatomy & Physiology", question:"Which organ produces bile?",
+   options:["Gallbladder","Liver","Pancreas","Spleen"], answer:1, explanation:"The liver produces bile."},
+  {category:"Anatomy & Physiology", question:"Which organ stores bile?",
+   options:["Liver","Gallbladder","Pancreas","Stomach"], answer:1, explanation:"The gallbladder stores bile."},
+  {category:"Anatomy & Physiology", question:"Gas exchange occurs in the:",
+   options:["Bronchi","Trachea","Alveoli","Larynx"], answer:2, explanation:"Gas exchange occurs in the alveoli."},
+  {category:"Anatomy & Physiology", question:"Which part of the brain controls balance and coordination?",
+   options:["Cerebrum","Cerebellum","Medulla oblongata","Hypothalamus"], answer:1, explanation:"The cerebellum controls balance and coordination."},
+  {category:"Anatomy & Physiology", question:"Which part of the brain controls breathing and heart rate?",
+   options:["Cerebrum","Cerebellum","Medulla oblongata","Thalamus"], answer:2, explanation:"The medulla oblongata controls vital functions."},
+  {category:"Anatomy & Physiology", question:"The liquid portion of blood is called:",
+   options:["Serum","Plasma","Lymph","Hemoglobin"], answer:1, explanation:"Plasma is the liquid portion of blood."},
+  {category:"Anatomy & Physiology", question:"Which blood type is the universal donor?",
+   options:["A","B","AB","O negative"], answer:3, explanation:"O negative is the universal donor."},
+  {category:"Anatomy & Physiology", question:"Which blood type is the universal recipient?",
+   options:["A","B","AB","O"], answer:2, explanation:"AB positive is the universal recipient."},
+  {category:"Anatomy & Physiology", question:"The thyroid gland is located in the:",
+   options:["Brain","Neck","Chest","Abdomen"], answer:1, explanation:"The thyroid gland is in the neck."},
+  {category:"Anatomy & Physiology", question:"The study of the structure of the body is called:",
+   options:["Physiology","Anatomy","Histology","Pathology"], answer:1, explanation:"Anatomy is the study of body structure."},
+  {category:"Anatomy & Physiology", question:"The study of the function of the body is called:",
+   options:["Physiology","Anatomy","Histology","Pathology"], answer:0, explanation:"Physiology is the study of body function."},
+
+  // ===== CLINICAL PROCEDURES (61–160) =====
+  {category:"Infection Control", question:"If a glove tears during a procedure involving body fluids, the medical assistant should:",
+   options:["Take the gloves off and finish the procedure","Finish the procedure, then wash his/her hands","Stop immediately, remove gloves, wash hands, and reapply gloves","Place a second pair of gloves over the torn ones"],
+   answer:2, explanation:"Stop immediately, remove gloves, wash hands, and apply new gloves."},
+  {category:"Clinical Procedures", question:"The correct procedure to obtain a clean-catch urine sample is to collect:",
+   options:["The last urine specimen before bed","The urine specimen after eating breakfast","As soon as the urine stream begins","The specimen in midstream"],
+   answer:3, explanation:"Midstream collection avoids contamination."},
+  {category:"Clinical Procedures", question:"A glucometer is used to monitor:",
+   options:["Sugar levels","Hearing acuity","Myopia","Cholesterol"], answer:0, explanation:"A glucometer measures blood glucose."},
+  {category:"Clinical Procedures", question:"When applying electrocardiograph leads:",
+   options:["Remove lotion or oil with alcohol swabs","Remove lotion or oil with hydrocortisone cream","Apply lead V4 at the fourth intercostal space (ICS), right sternal border","Apply lead V1 at the fourth intercostal space (ICS), left sternal border"],
+   answer:0, explanation:"Remove lotion/oil with alcohol swabs."},
+  {category:"Clinical Procedures", question:"The proper procedure for a bed bath is to start at the:",
+   options:["Extremity closest to the health assistant","Extremity farthest from the health assistant","Eyes and face","Back and buttocks"],
+   answer:2, explanation:"Start with the eyes and face (cleanest area)."},
+  {category:"Vital Signs", question:"The normal adult pulse rate is:",
+   options:["30–50 bpm","60–100 bpm","100–140 bpm","140–180 bpm"], answer:1, explanation:"Normal adult pulse is 60–100 bpm."},
+  {category:"Vital Signs", question:"When taking a blood pressure, the cuff should be placed:",
+   options:["Over the elbow","1 inch above the antecubital space","On the forearm","Below the wrist"], answer:1, explanation:"Cuff goes 1 inch above the antecubital space."},
+  {category:"Vital Signs", question:"The first sound heard when taking a blood pressure is the:",
+   options:["Diastolic pressure","Systolic pressure","Pulse pressure","Mean arterial pressure"], answer:1, explanation:"First Korotkoff sound = systolic."},
+  {category:"Vital Signs", question:"The disappearance of sound when taking a blood pressure is the:",
+   options:["Diastolic pressure","Systolic pressure","Pulse pressure","Mean arterial pressure"], answer:0, explanation:"Last Korotkoff sound = diastolic."},
+  {category:"Vital Signs", question:"Which of the following is NOT a vital sign?",
+   options:["Temperature","Pulse","Weight","Respiration"], answer:2, explanation:"Weight is not a vital sign."},
+  {category:"Vital Signs", question:"A temperature of 100.4°F (38°C) or higher is generally considered:",
+   options:["Normal","Hypothermia","A fever","Heat exhaustion"], answer:2, explanation:"100.4°F or higher is a fever."},
+  {category:"Vital Signs", question:"Which route of temperature measurement is considered most accurate?",
+   options:["Oral","Axillary","Rectal","Tympanic"], answer:2, explanation:"Rectal temperature is most accurate."},
+  {category:"Vital Signs", question:"Which pulse site is most commonly used in adults?",
+   options:["Carotid","Radial","Femoral","Brachial"], answer:1, explanation:"Radial pulse is most common in adults."},
+  {category:"Vital Signs", question:"Which pulse site is used during CPR?",
+   options:["Radial","Carotid","Femoral","Popliteal"], answer:1, explanation:"Carotid pulse is used during CPR."},
+  {category:"Vital Signs", question:"A patient is considered hypertensive if BP is consistently:",
+   options:["90/60 or lower","120/80 or lower","140/90 or higher","100/70 or higher"], answer:2, explanation:"140/90 or higher = hypertension."},
+  {category:"Vital Signs", question:"A patient is considered hypotensive if BP is:",
+   options:["Below 90/60","Above 120/80","Above 140/90","Above 160/100"], answer:0, explanation:"Below 90/60 = hypotension."},
+  {category:"Vital Signs", question:"A tympanic thermometer measures temperature in the:",
+   options:["Mouth","Ear","Armpit","Rectum"], answer:1, explanation:"Tympanic = ear."},
+  {category:"Vital Signs", question:"An axillary temperature is taken in the:",
+   options:["Mouth","Ear","Armpit","Rectum"], answer:2, explanation:"Axillary = armpit."},
+  {category:"Vital Signs", question:"A temporal thermometer measures temperature at the:",
+   options:["Forehead","Ear","Mouth","Rectum"], answer:0, explanation:"Temporal = forehead."},
+  {category:"Vital Signs", question:"The most common site for a capillary puncture in adults is the:",
+   options:["Earlobe","Fingertip","Heel","Toe"], answer:1, explanation:"Fingertip is most common in adults."},
+  {category:"Vital Signs", question:"The most common site for a capillary puncture in infants is the:",
+   options:["Earlobe","Fingertip","Heel","Toe"], answer:2, explanation:"Heel stick is used for infants."},
+  {category:"Clinical Procedures", question:"A sphygmomanometer is used to measure:",
+   options:["Temperature","Pulse","Blood pressure","Respirations"], answer:2, explanation:"Sphygmomanometer measures blood pressure."},
+  {category:"Clinical Procedures", question:"A stethoscope is used to:",
+   options:["Measure temperature","Listen to body sounds","Measure blood pressure only","Test reflexes"], answer:1, explanation:"A stethoscope is used to listen to body sounds."},
+  {category:"Clinical Procedures", question:"An otoscope is used to examine the:",
+   options:["Eyes","Ears","Nose","Throat"], answer:1, explanation:"Otoscope = ears."},
+  {category:"Clinical Procedures", question:"An ophthalmoscope is used to examine the:",
+   options:["Eyes","Ears","Nose","Throat"], answer:0, explanation:"Ophthalmoscope = eyes."},
+  {category:"Clinical Procedures", question:"A speculum is used to examine the:",
+   options:["Eyes","Ears","Vagina","Throat"], answer:2, explanation:"A speculum is used for vaginal exams."},
+  {category:"Clinical Procedures", question:"The Snellen chart is used to test:",
+   options:["Hearing","Vision","Blood pressure","Reflexes"], answer:1, explanation:"Snellen chart tests visual acuity."},
+  {category:"Clinical Procedures", question:"The tuning fork is used to test:",
+   options:["Hearing","Vision","Blood pressure","Reflexes"], answer:0, explanation:"Tuning fork tests hearing."},
+  {category:"Clinical Procedures", question:"A reflex hammer is used to test:",
+   options:["Hearing","Vision","Deep tendon reflexes","Blood pressure"], answer:2, explanation:"Reflex hammer tests deep tendon reflexes."},
+  {category:"Clinical Procedures", question:"The patient position in which the patient lies on their back with legs elevated is called:",
+   options:["Fowler's","Trendelenburg","Sims'","Prone"], answer:1, explanation:"Trendelenburg = back with legs elevated."},
+  {category:"Clinical Procedures", question:"The patient position in which the patient is sitting upright at 90 degrees is called:",
+   options:["Fowler's","Trendelenburg","Sims'","Prone"], answer:0, explanation:"Fowler's = sitting upright."},
+  {category:"Clinical Procedures", question:"The patient position in which the patient lies on their left side with the right knee drawn up is:",
+   options:["Fowler's","Trendelenburg","Sims'","Prone"], answer:2, explanation:"Sims' position = left side, right knee drawn up."},
+  {category:"Clinical Procedures", question:"The patient position in which the patient lies face down is:",
+   options:["Supine","Prone","Lateral","Sims'"], answer:1, explanation:"Prone = face down."},
+  {category:"Clinical Procedures", question:"The patient position in which the patient lies face up is:",
+   options:["Supine","Prone","Lateral","Sims'"], answer:0, explanation:"Supine = face up."},
+  {category:"Clinical Procedures", question:"The lithotomy position is used for:",
+   options:["Eye exams","Pelvic exams","Ear exams","Dental exams"], answer:1, explanation:"Lithotomy = pelvic exams."},
+  {category:"Clinical Procedures", question:"The dorsal recumbent position is when the patient is:",
+   options:["On the back with knees bent","Face down","On the side","Sitting upright"], answer:0, explanation:"Dorsal recumbent = on back with knees bent."},
+  {category:"Clinical Procedures", question:"The knee-chest position is used for:",
+   options:["Eye exams","Rectal exams","Ear exams","Dental exams"], answer:1, explanation:"Knee-chest = rectal exams."},
+  {category:"Clinical Procedures", question:"A patient should be instructed to fast before which test?",
+   options:["Urinalysis","Fasting blood glucose","Throat culture","Strep test"], answer:1, explanation:"Fasting blood glucose requires fasting."},
+  {category:"Clinical Procedures", question:"A tourniquet is applied during venipuncture to:",
+   options:["Stop bleeding","Make veins more visible","Reduce pain","Clean the site"], answer:1, explanation:"Tourniquet makes veins more visible."},
+  {category:"Clinical Procedures", question:"The most common site for venipuncture is the:",
+   options:["Antecubital fossa","Hand","Foot","Neck"], answer:0, explanation:"Antecubital fossa is the most common site."},
+  {category:"Clinical Procedures", question:"After venipuncture, the patient should be instructed to:",
+   options:["Bend the arm and apply pressure","Remove the bandage immediately","Exercise the arm","Drink water"], answer:0, explanation:"Apply pressure and bend the arm."},
+  {category:"Clinical Procedures", question:"Which color tube is used for a hematocrit?",
+   options:["Red","Lavender","Green","Blue"], answer:1, explanation:"Lavender tube is used for hematocrit."},
+  {category:"Clinical Procedures", question:"Which color tube is used for a blood chemistry test?",
+   options:["Red","Lavender","Green","Blue"], answer:0, explanation:"Red tube is used for chemistry tests."},
+  {category:"Clinical Procedures", question:"The correct order of draw for venipuncture is:",
+   options:["Red, lavender, green, blue","Blue, red, green, lavender","Lavender, red, blue, green","Green, blue, lavender, red"], answer:1, explanation:"Order: blue, red, green, lavender."},
+  {category:"Clinical Procedures", question:"A centrifuge is used to:",
+   options:["Measure blood pressure","Separate blood components","Sterilize equipment","Test hearing"], answer:1, explanation:"Centrifuge separates blood components."},
+  {category:"Clinical Procedures", question:"A hemoglobin test measures:",
+   options:["Oxygen-carrying capacity","White blood cells","Platelets","Clotting time"], answer:0, explanation:"Hemoglobin measures oxygen-carrying capacity."},
+  {category:"Clinical Procedures", question:"A hematocrit test measures:",
+   options:["The percentage of red blood cells in blood","White blood cell count","Platelet count","Clotting time"], answer:0, explanation:"Hematocrit = % of RBCs in blood."},
+  {category:"Clinical Procedures", question:"A glucose tolerance test is used to diagnose:",
+   options:["Diabetes","Anemia","Infection","Hypertension"], answer:0, explanation:"Glucose tolerance test diagnoses diabetes."},
+  {category:"Clinical Procedures", question:"A throat culture is used to diagnose:",
+   options:["Strep throat","Anemia","Diabetes","Hypertension"], answer:0, explanation:"Throat culture tests for strep."},
+  {category:"Clinical Procedures", question:"A rapid strep test typically takes:",
+   options:["5–10 minutes","1 hour","2 hours","24 hours"], answer:0, explanation:"Rapid strep test takes about 5–10 minutes."},
+  {category:"Clinical Procedures", question:"A PPD test is used to screen for:",
+   options:["Tuberculosis","Diabetes","Anemia","Hypertension"], answer:0, explanation:"PPD = tuberculosis skin test."},
+  {category:"Clinical Procedures", question:"A PPD test is read after:",
+   options:["1 hour","24 hours","48–72 hours","1 week"], answer:2, explanation:"PPD is read at 48–72 hours."},
+  {category:"Clinical Procedures", question:"An allergy skin test involves:",
+   options:["Injecting allergens under the skin","Drawing blood","Taking an X-ray","Urine collection"], answer:0, explanation:"Allergy test injects allergens under the skin."},
+  {category:"Clinical Procedures", question:"The Mantoux test is another name for:",
+   options:["PPD test","Allergy test","Glucose test","Strep test"], answer:0, explanation:"Mantoux = PPD test."},
+  {category:"Clinical Procedures", question:"A Doppler ultrasound is used to:",
+   options:["Measure blood flow","Measure temperature","Test hearing","Test vision"], answer:0, explanation:"Doppler measures blood flow."},
+  {category:"Clinical Procedures", question:"An EKG measures the electrical activity of the:",
+   options:["Brain","Heart","Lungs","Muscles"], answer:1, explanation:"EKG measures heart electrical activity."},
+  {category:"Clinical Procedures", question:"A Holter monitor is used to:",
+   options:["Monitor heart rhythm over 24 hours","Measure blood pressure","Test hearing","Test vision"], answer:0, explanation:"Holter monitors heart rhythm over 24 hours."},
+  {category:"Clinical Procedures", question:"A spirometer measures:",
+   options:["Lung capacity","Heart rate","Blood pressure","Temperature"], answer:0, explanation:"Spirometer measures lung capacity."},
+  {category:"Clinical Procedures", question:"A pulse oximeter measures:",
+   options:["Oxygen saturation","Blood pressure","Heart rate only","Temperature"], answer:0, explanation:"Pulse oximeter measures O2 saturation."},
+  {category:"Clinical Procedures", question:"Normal oxygen saturation is:",
+   options:["50–70%","70–85%","85–94%","95–100%"], answer:3, explanation:"Normal O2 saturation is 95–100%."},
+  {category:"Clinical Procedures", question:"A peak flow meter is used for patients with:",
+   options:["Asthma","Diabetes","Hypertension","Anemia"], answer:0, explanation:"Peak flow meter is used for asthma."},
+  {category:"Clinical Procedures", question:"An incentive spirometer is used to:",
+   options:["Improve lung function","Measure blood pressure","Test hearing","Test vision"], answer:0, explanation:"Incentive spirometer improves lung function."},
+  {category:"Clinical Procedures", question:"A urinary catheter is used to:",
+   options:["Drain urine from the bladder","Measure blood pressure","Test hearing","Test vision"], answer:0, explanation:"Catheter drains urine from the bladder."},
+  {category:"Clinical Procedures", question:"A Foley catheter is a type of:",
+   options:["Indwelling urinary catheter","Blood pressure cuff","Hearing aid","Vision test"], answer:0, explanation:"Foley is an indwelling urinary catheter."},
+  {category:"Clinical Procedures", question:"When applying a bandage, the medical assistant should:",
+   options:["Apply tightly to stop bleeding","Apply snugly but not too tight","Apply loosely","Apply only on the wound"], answer:1, explanation:"Bandages should be snug but not too tight."},
+  {category:"Clinical Procedures", question:"A sterile field should be:",
+   options:["Kept dry and above waist level","Touched with bare hands","Set up 1 hour before procedure","Reused for multiple patients"], answer:0, explanation:"Sterile field must be kept dry and above waist."},
+  {category:"Clinical Procedures", question:"When applying sterile gloves, the medical assistant should:",
+   options:["Touch only the inside of the gloves","Touch only the outside of the gloves","Put them on with bare hands","Use a glove helper"], answer:0, explanation:"Touch only the inside of sterile gloves when applying."},
+  {category:"Clinical Procedures", question:"The correct way to remove contaminated gloves is to:",
+   options:["Pull from the fingertips","Peel from the wrist inside out","Cut them off","Wash them and reuse"], answer:1, explanation:"Peel gloves off inside out to avoid contamination."},
+  {category:"Clinical Procedures", question:"Handwashing should last at least:",
+   options:["5 seconds","10 seconds","20 seconds","2 minutes"], answer:2, explanation:"Handwashing should last at least 20 seconds."},
+  {category:"Clinical Procedures", question:"Alcohol-based hand rub should be used:",
+   options:["When hands are visibly soiled","When hands are not visibly soiled","Only in surgery","Only after gloves"], answer:1, explanation:"Alcohol rub is for non-visibly soiled hands."},
+  {category:"Clinical Procedures", question:"Soap and water should be used:",
+   options:["When hands are visibly soiled","When hands are not soiled","Only in surgery","Only before gloves"], answer:0, explanation:"Soap and water for visibly soiled hands."},
+  {category:"Infection Control", question:"Standard precautions apply to:",
+   options:["Only surgical patients","All patients","Only infectious patients","Only children"], answer:1, explanation:"Standard precautions apply to all patients."},
+  {category:"Infection Control", question:"PPE stands for:",
+   options:["Personal protective equipment","Patient protective equipment","Public protective equipment","Personal provider equipment"], answer:0, explanation:"PPE = personal protective equipment."},
+  {category:"Infection Control", question:"Which of the following is NOT considered PPE?",
+   options:["Gloves","Gown","Mask","Stethoscope"], answer:3, explanation:"Stethoscope is not PPE."},
+  {category:"Infection Control", question:"The chain of infection includes all EXCEPT:",
+   options:["Infectious agent","Reservoir","Portal of exit","Handwashing"], answer:3, explanation:"Handwashing breaks the chain; it is not a link."},
+  {category:"Infection Control", question:"The most effective way to prevent the spread of infection is:",
+   options:["Wearing gloves","Handwashing","Wearing a mask","Isolation"], answer:1, explanation:"Handwashing is the most effective prevention."},
+  {category:"Infection Control", question:"A nosocomial infection is one that is:",
+   options:["Acquired in a hospital","Acquired at home","Foodborne","Airborne"], answer:0, explanation:"Nosocomial = hospital-acquired."},
+  {category:"Infection Control", question:"An autoclave uses:",
+   options:["Steam under pressure","Chemical solutions","UV light","Dry heat"], answer:0, explanation:"Autoclave uses steam under pressure."},
+  {category:"Infection Control", question:"The standard autoclave temperature is:",
+   options:["100°F","212°F","250°F","350°F"], answer:2, explanation:"Standard autoclave is 250°F."},
+  {category:"Infection Control", question:"Sterilization means:",
+   options:["Killing all microorganisms including spores","Killing only bacteria","Removing dirt","Using disinfectant"], answer:0, explanation:"Sterilization kills all microorganisms."},
+  {category:"Infection Control", question:"Disinfection means:",
+   options:["Killing all microorganisms including spores","Killing most microorganisms but not spores","Removing dirt","Using soap and water"], answer:1, explanation:"Disinfection kills most but not all spores."},
+  {category:"Infection Control", question:"Sanitization means:",
+   options:["Killing all microorganisms","Killing most microorganisms","Removing dirt and debris","Sterilizing"], answer:2, explanation:"Sanitization removes dirt and debris."},
+  {category:"Infection Control", question:"A biohazard bag is used for:",
+   options:["Regular trash","Contaminated waste","Recyclables","Sharps"], answer:1, explanation:"Biohazard bags hold contaminated waste."},
+  {category:"Infection Control", question:"A sharps container is used for:",
+   options:["Needles and lancets","Paper waste","Food waste","Glass only"], answer:0, explanation:"Sharps containers hold needles and lancets."},
+  {category:"Infection Control", question:"A sharps container should be replaced when it is:",
+   options:["Half full","Three-quarters full","Completely full","Overflowing"], answer:1, explanation:"Replace when three-quarters full."},
+  {category:"Infection Control", question:"The OSHA Bloodborne Pathogens Standard requires:",
+   options:["Employers to provide PPE","Employees to buy their own PPE","Only hospitals to comply","Only labs to comply"], answer:0, explanation:"Employers must provide PPE."},
+  {category:"Infection Control", question:"Needlestick injuries should be:",
+   options:["Ignored","Reported immediately","Treated with antibiotics only","Kept secret"], answer:1, explanation:"Report needlesticks immediately."},
+  {category:"Infection Control", question:"After a needlestick injury, the first step is to:",
+   options:["Wash the wound with soap and water","Report to supervisor","Go to the ER","Take a pill"], answer:0, explanation:"Wash wound with soap and water first."},
+  {category:"Infection Control", question:"Hepatitis B is transmitted through:",
+   options:["Blood and body fluids","Air","Food","Water"], answer:0, explanation:"Hepatitis B is bloodborne."},
+  {category:"Infection Control", question:"HIV is transmitted through:",
+   options:["Blood and body fluids","Air","Food","Water"], answer:0, explanation:"HIV is bloodborne."},
+  {category:"Infection Control", question:"Tuberculosis is transmitted through:",
+   options:["Airborne droplets","Blood","Food","Water"], answer:0, explanation:"TB is airborne."},
+  {category:"Infection Control", question:"The common cold is transmitted through:",
+   options:["Airborne droplets","Blood","Food","Water"], answer:0, explanation:"Cold is airborne/droplet."},
+  {category:"Infection Control", question:"A patient with TB should be placed in:",
+   options:["Standard precautions only","Airborne precautions","Contact precautions","Droplet precautions"], answer:1, explanation:"TB requires airborne precautions."},
+  {category:"Infection Control", question:"A patient with C. diff should be placed in:",
+   options:["Standard precautions","Airborne precautions","Contact precautions","Droplet precautions"], answer:2, explanation:"C. diff requires contact precautions."},
+  {category:"Infection Control", question:"A patient with influenza should be placed in:",
+   options:["Standard precautions","Airborne precautions","Contact precautions","Droplet precautions"], answer:3, explanation:"Flu requires droplet precautions."},
+  {category:"Infection Control", question:"An N95 respirator is used for:",
+   options:["Airborne precautions","Contact precautions","Droplet precautions","Standard precautions"], answer:0, explanation:"N95 is for airborne precautions."},
+  {category:"Infection Control", question:"A surgical mask is used for:",
+   options:["Airborne precautions","Droplet precautions","Contact precautions","Standard precautions"], answer:1, explanation:"Surgical mask for droplet precautions."},
+  {category:"Infection Control", question:"The most common route of infection transmission in healthcare is:",
+   options:["Airborne","Contact","Droplet","Vector"], answer:1, explanation:"Contact is the most common route."},
+  {category:"Clinical Procedures", question:"A patient in isolation should have:",
+   options:["A private room","A shared room","No visitors","No PPE"], answer:0, explanation:"Isolation patients need a private room."},
+  {category:"Clinical Procedures", question:"When entering an isolation room, the medical assistant should:",
+   options:["Put on PPE before entering","Put on PPE after entering","Wear no PPE","Wear only gloves"], answer:0, explanation:"PPE goes on before entering."},
+  {category:"Clinical Procedures", question:"When leaving an isolation room, the medical assistant should:",
+   options:["Remove PPE before leaving","Remove PPE after leaving","Keep PPE on","Wear PPE home"], answer:0, explanation:"Remove PPE before leaving the room."},
+  {category:"Clinical Procedures", question:"A sterile field is considered contaminated if:",
+   options:["It is touched by a non-sterile object","It is set up 5 minutes ago","It is above waist level","It is dry"], answer:0, explanation:"Contact with non-sterile objects contaminates the field."},
+  {category:"Clinical Procedures", question:"Sterile packages should be checked for:",
+   options:["Expiration date and integrity","Color","Weight","Brand"], answer:0, explanation:"Check expiration and package integrity."},
+  {category:"Clinical Procedures", question:"When opening a sterile package, the medical assistant should:",
+   options:["Open away from the body","Open toward the body","Tear it open","Cut it open"], answer:0, explanation:"Open sterile packages away from the body."},
+  {category:"Clinical Procedures", question:"Sterile gloves should be put on:",
+   options:["After the sterile field is set up","Before the sterile field","At the same time","After the procedure"], answer:0, explanation:"Put on sterile gloves after setting up the field."},
+  {category:"Clinical Procedures", question:"The medical assistant should wash hands:",
+   options:["Before and after patient contact","Only before patient contact","Only after patient contact","Once a day"], answer:0, explanation:"Wash before and after every patient contact."},
+  {category:"Clinical Procedures", question:"When taking a blood pressure, the patient should:",
+   options:["Sit quietly for 5 minutes","Exercise first","Drink coffee","Stand up"], answer:0, explanation:"Patient should rest 5 minutes before BP."},
+  {category:"Clinical Procedures", question:"The correct cuff size for a blood pressure is:",
+   options:["Any size","Based on arm circumference","Always large","Always small"], answer:1, explanation:"Cuff size is based on arm circumference."},
+  {category:"Clinical Procedures", question:"When taking a blood pressure, the bell of the stethoscope is placed over the:",
+   options:["Brachial artery","Radial artery","Carotid artery","Femoral artery"], answer:0, explanation:"Bell goes over the brachial artery."},
+  {category:"Clinical Procedures", question:"The pulse oximeter is placed on the:",
+   options:["Finger","Ear","Toe","Wrist"], answer:0, explanation:"Pulse oximeter goes on the finger."},
+  {category:"Clinical Procedures", question:"The normal adult blood pressure is:",
+   options:["90/60","120/80","140/90","160/100"], answer:1, explanation:"Normal BP is 120/80."},
+  {category:"Clinical Procedures", question:"When recording a blood pressure, the systolic is written:",
+   options:["Over the diastolic","Under the diastolic","After the diastolic","Separately"], answer:0, explanation:"Systolic over diastolic (e.g., 120/80)."},
+  {category:"Clinical Procedures", question:"A pediatric patient's blood pressure is typically:",
+   options:["Lower than adults","Higher than adults","The same as adults","Not measured"], answer:0, explanation:"Children typically have lower BP."},
+  {category:"Clinical Procedures", question:"The normal pediatric heart rate is:",
+   options:["60–100 bpm","80–120 bpm","100–160 bpm","140–200 bpm"], answer:2, explanation:"Pediatric HR is typically 100–160 bpm."},
+  {category:"Clinical Procedures", question:"The normal pediatric respiratory rate is:",
+   options:["12–20","20–30","30–60","60–100"], answer:2, explanation:"Pediatric RR is 30–60."},
+  {category:"Clinical Procedures", question:"When measuring an infant's length, the medical assistant should:",
+   options:["Lay the infant flat and measure head to heel","Hold the infant upright","Measure only the torso","Measure while feeding"], answer:0, explanation:"Infants are measured lying flat head to heel."},
+  {category:"Clinical Procedures", question:"When weighing an infant, the medical assistant should:",
+   options:["Use a calibrated infant scale","Use an adult scale","Estimate weight","Weigh with clothes on"], answer:0, explanation:"Use a calibrated infant scale."},
+  {category:"Clinical Procedures", question:"The Apgar score is used to assess:",
+   options:["Newborns","Toddlers","Adults","Elderly"], answer:0, explanation:"Apgar assesses newborns."},
+  {category:"Clinical Procedures", question:"The Apgar score assesses all EXCEPT:",
+   options:["Appearance","Pulse","Grimace","Hearing"], answer:3, explanation:"Apgar = Appearance, Pulse, Grimace, Activity, Respiration."},
+  {category:"Clinical Procedures", question:"A pediatric patient's injection site is typically the:",
+   options:["Deltoid","Vastus lateralis","Gluteus","Abdomen"], answer:1, explanation:"Vastus lateralis is used in infants/children."},
+  {category:"Clinical Procedures", question:"The deltoid injection site is used for:",
+   options:["Infants","Adults","Toddlers","Elderly only"], answer:1, explanation:"Deltoid is used for adults."},
+  {category:"Clinical Procedures", question:"The ventrogluteal site is used for:",
+   options:["Infants","Adults","Toddlers","Elderly"], answer:1, explanation:"Ventrogluteal is used for adults."},
+  {category:"Clinical Procedures", question:"The Z-track injection technique is used to:",
+   options:["Prevent medication from leaking into subcutaneous tissue","Reduce pain","Increase absorption","Prevent infection"], answer:0, explanation:"Z-track prevents medication leakage."},
+  {category:"Clinical Procedures", question:"The angle for an intramuscular injection is:",
+   options:["15°","45°","90°","180°"], answer:2, explanation:"IM injections are at 90°."},
+  {category:"Clinical Procedures", question:"The angle for a subcutaneous injection is:",
+   options:["15°","45°","90°","180°"], answer:1, explanation:"Subcutaneous injections are at 45°."},
+  {category:"Clinical Procedures", question:"The angle for an intradermal injection is:",
+   options:["15°","45°","90°","180°"], answer:0, explanation:"Intradermal injections are at 15°."},
+  {category:"Clinical Procedures", question:"The angle for an intravenous injection is:",
+   options:["15°","25°","45°","90°"], answer:1, explanation:"IV injections are at 25°."},
+  {category:"Clinical Procedures", question:"A tuberculin syringe is used for:",
+   options:["Intradermal injections","Intramuscular injections","Intravenous injections","Subcutaneous injections"], answer:0, explanation:"Tuberculin syringe is for intradermal."},
+  {category:"Clinical Procedures", question:"An insulin syringe is calibrated in:",
+   options:["Milliliters","Units","Grams","Ounces"], answer:1, explanation:"Insulin syringes are calibrated in units."},
+  {category:"Clinical Procedures", question:"The 'five rights' of medication administration include all EXCEPT:",
+   options:["Right patient","Right drug","Right dose","Right color"], answer:3, explanation:"Color is not one of the five rights."},
+  {category:"Clinical Procedures", question:"The 'five rights' include:",
+   options:["Right patient, drug, dose, route, time","Right patient, drug, dose, color, shape","Right patient, drug, color, shape, size","Right patient, drug, dose, taste, smell"], answer:0, explanation:"Five rights: patient, drug, dose, route, time."},
+  {category:"Clinical Procedures", question:"Medications should be checked:",
+   options:["Once","Twice","Three times","Four times"], answer:2, explanation:"Check medications three times before administration."},
+
+  // ===== SAFETY & ADMINISTRATIVE (161–300) =====
+  {category:"Safety", question:"What method does an autoclave use to sterilize supplies or equipment?",
+   options:["Ultraviolet filtered rays","Chemical solutions","Steam under pressure","Ionic charges"], answer:2, explanation:"Autoclave uses steam under pressure."},
+  {category:"Safety", question:"After assisting a physician with a procedure, the suture removal scissors should be:",
+   options:["Autoclaved prior to disposal","Placed in a red 'biohazard' bag","Put in an approved sharps container","Double bagged and incinerated"], answer:2, explanation:"Sharps go in an approved sharps container."},
+  {category:"Safety", question:"Gloves, lab coats, gowns, and masks are all examples of:",
+   options:["Standard precautions","Personal protective equipment","Sterile field supplies","Isolation gear"], answer:1, explanation:"These are all PPE."},
+  {category:"Safety", question:"The acronym RACE stands for:",
+   options:["Rescue, Alarm, Confine, Extinguish/Evacuate","Run, Alert, Contain, Escape","React, Assess, Call, Evacuate","Rescue, Alert, Contain, Exit"], answer:0, explanation:"RACE = Rescue, Alarm, Confine, Extinguish/Evacuate."},
+  {category:"Safety", question:"The acronym PASS stands for:",
+   options:["Pull, Aim, Squeeze, Sweep","Push, Aim, Shoot, Stop","Point, Alert, Spray, Stop","Pull, Alert, Spray, Sweep"], answer:0, explanation:"PASS = Pull, Aim, Squeeze, Sweep."},
+  {category:"Safety", question:"A fire extinguisher should be used:",
+   options:["Only on small fires","On all fires","Only on large fires","Never"], answer:0, explanation:"Use only on small, contained fires."},
+  {category:"Safety", question:"The fire alarm should be activated:",
+   options:["Before rescuing patients","After rescuing patients","After extinguishing","Never"], answer:1, explanation:"Rescue first, then alarm."},
+  {category:"Safety", question:"When a patient falls, the medical assistant should:",
+   options:["Help the patient up immediately","Assess for injury before moving","Call 911","Ignore"], answer:1, explanation:"Assess for injury before moving the patient."},
+  {category:"Safety", question:"A patient fall should be:",
+   options:["Documented","Ignored","Kept secret","Reported to family only"], answer:0, explanation:"All falls must be documented."},
+  {category:"Safety", question:"The most common cause of falls in healthcare is:",
+   options:["Slippery floors","Medication side effects","Improper lifting","Poor lighting"], answer:0, explanation:"Slippery floors are a common cause."},
+  {category:"Safety", question:"When lifting a patient, the medical assistant should:",
+   options:["Bend at the waist","Bend at the knees","Twist the body","Reach overhead"], answer:1, explanation:"Bend at the knees to protect the back."},
+  {category:"Safety", question:"A gait belt is used to:",
+   options:["Transfer patients safely","Restrain patients","Measure weight","Measure height"], answer:0, explanation:"Gait belt helps transfer patients safely."},
+  {category:"Safety", question:"When transferring a patient, the medical assistant should:",
+   options:["Lock the wheels of the bed/chair","Leave wheels unlocked","Use a wheelchair only","Ignore safety"], answer:0, explanation:"Lock wheels before transfer."},
+  {category:"Safety", question:"A patient with a fall risk should have:",
+   options:["A bed alarm","No restraints","A private room","No assistance"], answer:0, explanation:"Bed alarms help prevent falls."},
+  {category:"Safety", question:"Restraints should be used:",
+   options:["Only when necessary and with a doctor's order","Whenever convenient","For all patients","Without documentation"], answer:0, explanation:"Restraints require a doctor's order."},
+  {category:"Safety", question:"Restraints should be checked:",
+   options:["Every 15 minutes","Every hour","Every shift","Once a day"], answer:0, explanation:"Check restraints every 15 minutes."},
+  {category:"Safety", question:"The abbreviation 'MSDS' stands for:",
+   options:["Material Safety Data Sheet","Medical Safety Data Sheet","Material Standard Data Sheet","Medical Standard Data Sheet"], answer:0, explanation:"MSDS = Material Safety Data Sheet."},
+  {category:"Safety", question:"An MSDS provides information about:",
+   options:["Hazardous chemicals","Patient care","Medications","Insurance"], answer:0, explanation:"MSDS provides chemical hazard information."},
+  {category:"Safety", question:"The abbreviation 'SDS' stands for:",
+   options:["Safety Data Sheet","Standard Data Sheet","Sterile Data Sheet","Surgical Data Sheet"], answer:0, explanation:"SDS = Safety Data Sheet."},
+  {category:"Safety", question:"Biohazard symbols indicate:",
+   options:["Infectious waste","Recyclables","Food","Medications"], answer:0, explanation:"Biohazard = infectious waste."},
+  {category:"Safety", question:"Chemical spills should be cleaned up:",
+   options:["Immediately with appropriate kit","Later","By the patient","By housekeeping only"], answer:0, explanation:"Clean spills immediately with appropriate kit."},
+  {category:"Safety", question:"The abbreviation 'OSHA' stands for:",
+   options:["Occupational Safety and Health Administration","Organization for Safety and Health Administration","Official Safety and Health Association","Occupational Standards and Health Association"], answer:0, explanation:"OSHA = Occupational Safety and Health Administration."},
+  {category:"Safety", question:"OSHA's mission is to:",
+   options:["Ensure safe working conditions","Provide insurance","Regulate medications","License physicians"], answer:0, explanation:"OSHA ensures safe working conditions."},
+  {category:"Safety", question:"The abbreviation 'CDC' stands for:",
+   options:["Centers for Disease Control and Prevention","Center for Disease Control","Central Disease Control","Centers for Disease Care"], answer:0, explanation:"CDC = Centers for Disease Control and Prevention."},
+  {category:"Safety", question:"The abbreviation 'WHO' stands for:",
+   options:["World Health Organization","World Hospital Organization","Worldwide Health Office","World Health Office"], answer:0, explanation:"WHO = World Health Organization."},
+  {category:"Safety", question:"The abbreviation 'CLIA' stands for:",
+   options:["Clinical Laboratory Improvement Amendments","Clinical Laboratory Inspection Act","Clinical Lab Improvement Act","Clinical Laboratory Information Act"], answer:0, explanation:"CLIA = Clinical Laboratory Improvement Amendments."},
+  {category:"Safety", question:"CLIA regulates:",
+   options:["Laboratory testing","Medications","Insurance","Patient records"], answer:0, explanation:"CLIA regulates lab testing."},
+  {category:"Safety", question:"The abbreviation 'HIPAA' stands for:",
+   options:["Health Insurance Portability and Accountability Act","Health Information Protection Act","Health Insurance Privacy Act","Health Information Portability Act"], answer:0, explanation:"HIPAA = Health Insurance Portability and Accountability Act."},
+  {category:"Safety", question:"HIPAA protects:",
+   options:["Patient privacy","Employee privacy","Employer privacy","Government privacy"], answer:0, explanation:"HIPAA protects patient privacy."},
+  {category:"Safety", question:"A HIPAA violation can result in:",
+   options:["Fines and penalties","No consequences","A warning only","A promotion"], answer:0, explanation:"HIPAA violations result in fines."},
+  {category:"Administrative", question:"When calling a prescription in to a pharmacy, the medical assistant should:",
+   options:["Inform the pharmacist of the patient's diagnosis","Ask the pharmacist what prescription insurance coverage the patient carries","Call the pharmacy closest to the doctor's office","Gather all pertinent patient information and have it available before making the call"],
+   answer:3, explanation:"Have all pertinent patient information ready before calling."},
+  {category:"Administrative", question:"When leaving a phone message regarding lab results on a patient's answering machine, the medical assistant should:",
+   options:["Give complete information about the test results","Leave the doctor's name and home phone number","Instruct the patient to call the lab","Maintain the patient's confidentiality"],
+   answer:3, explanation:"Maintain confidentiality; do not leave detailed results."},
+  {category:"Administrative", question:"The medical record is considered a:",
+   options:["Document to inform hospital administrators","Historical record of previous care","Casual record of patient observations","Legal record of complete care given"],
+   answer:3, explanation:"The medical record is a legal document."},
+  {category:"Administrative", question:"What type of illness must be reported to the local board of health?",
+   options:["Chronic","Communicable","Only those related to hepatic issues","Only sexually transmitted diseases"],
+   answer:1, explanation:"Communicable diseases are reportable."},
+  {category:"Administrative", question:"Which of the following is considered part of the patient's demographic information?",
+   options:["Current address, birthdate, marital status, and emergency contact","Method of payment and insurance information","Chief complaint and history of present illness","Diagnosis and treatment plan"],
+   answer:0, explanation:"Demographics include identifying data."},
+  {category:"Administrative", question:"The insurance company is commonly known as the:",
+   options:["Carrier","Subscriber","Dependent","Provider"], answer:0, explanation:"Insurance company = carrier."},
+  {category:"Administrative", question:"If a patient has a PPO and would like to see a specialist, the patient must:",
+   options:["See the primary care physician first for a referral","Pay the full cost of the specialist visit","See a specialist within the network only","Get pre-authorization from the insurance company"],
+   answer:0, explanation:"PPO typically requires a referral from the PCP."},
+  {category:"Administrative", question:"A deductible is:",
+   options:["The amount paid before insurance covers","The monthly payment","The co-pay","The total bill"], answer:0, explanation:"Deductible = amount paid before insurance covers."},
+  {category:"Administrative", question:"A co-pay is:",
+   options:["A fixed amount paid at each visit","The monthly payment","The total bill","The deductible"], answer:0, explanation:"Co-pay = fixed amount at each visit."},
+  {category:"Administrative", question:"Coinsurance is:",
+   options:["A percentage of costs shared with insurance","A fixed fee","The deductible","The premium"], answer:0, explanation:"Coinsurance = percentage of costs shared."},
+  {category:"Administrative", question:"A premium is:",
+   options:["The monthly payment for insurance","The deductible","The co-pay","The total bill"], answer:0, explanation:"Premium = monthly insurance payment."},
+  {category:"Administrative", question:"Medicare is for:",
+   options:["People 65+ and certain disabled","Only children","Only veterans","Only low-income"], answer:0, explanation:"Medicare covers 65+ and certain disabled."},
+  {category:"Administrative", question:"Medicaid is for:",
+   options:["Low-income individuals","Only elderly","Only veterans","Only children"], answer:0, explanation:"Medicaid is for low-income individuals."},
+  {category:"Administrative", question:"TRICARE is for:",
+   options:["Military personnel and families","Only veterans","Only federal employees","Only children"], answer:0, explanation:"TRICARE covers military and families."},
+  {category:"Administrative", question:"A referral is required for:",
+   options:["HMO patients to see specialists","All patients","Only Medicare patients","Only Medicaid patients"], answer:0, explanation:"HMO patients need referrals for specialists."},
+  {category:"Administrative", question:"An EOB is:",
+   options:["Explanation of Benefits","Estimate of Billing","Entry of Benefits","Evaluation of Billing"], answer:0, explanation:"EOB = Explanation of Benefits."},
+  {category:"Administrative", question:"An EOB is sent by:",
+   options:["The insurance company","The patient","The provider","The pharmacy"], answer:0, explanation:"Insurance sends the EOB."},
+  {category:"Administrative", question:"CPT codes are used for:",
+   options:["Procedures","Diagnoses","Medications","Supplies"], answer:0, explanation:"CPT = procedures."},
+  {category:"Administrative", question:"ICD codes are used for:",
+   options:["Diagnoses","Procedures","Medications","Supplies"], answer:0, explanation:"ICD = diagnoses."},
+  {category:"Administrative", question:"The current ICD code version is:",
+   options:["ICD-9","ICD-10","ICD-11","ICD-12"], answer:1, explanation:"Current version is ICD-10."},
+  {category:"Administrative", question:"The CPT code for an office visit is typically:",
+   options:["99201–99215","10000–19999","20000–29999","30000–39999"], answer:0, explanation:"Office visits are 99201–99215."},
+  {category:"Administrative", question:"A superbill is:",
+   options:["A form listing services for insurance billing","A prescription","A lab report","A referral"], answer:0, explanation:"Superbill lists services for billing."},
+  {category:"Administrative", question:"A patient's chart should be:",
+   options:["Kept secure and confidential","Left in the open","Shared with family","Discussed in the waiting room"], answer:0, explanation:"Charts must be kept secure."},
+  {category:"Administrative", question:"When releasing medical records, the medical assistant should:",
+   options:["Obtain written patient authorization","Release without authorization","Only release to family","Only release to employers"], answer:0, explanation:"Written authorization is required."},
+  {category:"Administrative", question:"The abbreviation 'PHI' stands for:",
+   options:["Protected Health Information","Personal Health Information","Private Health Information","Public Health Information"], answer:0, explanation:"PHI = Protected Health Information."},
+  {category:"Administrative", question:"PHI includes all EXCEPT:",
+   options:["Name and address","Social Security number","Diagnosis","Favorite color"], answer:3, explanation:"Favorite color is not PHI."},
+  {category:"Administrative", question:"Under HIPAA, patients have the right to:",
+   options:["Access their medical records","Destroy their records","Change their diagnosis","Refuse treatment without consequences"], answer:0, explanation:"Patients have the right to access records."},
+  {category:"Administrative", question:"A subpoena for medical records requires:",
+   options:["Patient authorization or court order","Only a phone call","Only a fax","Only an email"], answer:0, explanation:"Subpoena requires proper authorization/order."},
+  {category:"Administrative", question:"Informed consent means:",
+   options:["The patient understands and agrees to treatment","The patient signs without understanding","The doctor decides","The family decides"], answer:0, explanation:"Informed consent = patient understands and agrees."},
+  {category:"Administrative", question:"A minor can consent to treatment for:",
+   options:["STDs and pregnancy-related care","All treatments","No treatments","Only emergencies"], answer:0, explanation:"Minors can consent to STD/pregnancy care."},
+  {category:"Administrative", question:"An emancipated minor is:",
+   options:["A minor who is legally independent","Any teenager","A minor with a job","A minor with a car"], answer:0, explanation:"Emancipated minors are legally independent."},
+  {category:"Administrative", question:"The abbreviation 'DNR' stands for:",
+   options:["Do Not Resuscitate","Do Not Report","Do Not Refer","Do Not Record"], answer:0, explanation:"DNR = Do Not Resuscitate."},
+  {category:"Administrative", question:"An advance directive is:",
+   options:["A legal document stating a patient's wishes","A prescription","A referral","A lab order"], answer:0, explanation:"Advance directive states patient's wishes."},
+  {category:"Administrative", question:"A living will is a type of:",
+   options:["Advance directive","Prescription","Referral","Lab order"], answer:0, explanation:"Living will is an advance directive."},
+  {category:"Administrative", question:"A durable power of attorney for healthcare is:",
+   options:["A person designated to make healthcare decisions","A lawyer","A doctor","A nurse"], answer:0, explanation:"Designated healthcare decision-maker."},
+  {category:"Administrative", question:"A patient's bill of rights includes:",
+   options:["The right to respectful care","The right to free care","The right to demand medication","The right to skip payment"], answer:0, explanation:"Right to respectful care is included."},
+  {category:"Administrative", question:"The abbreviation 'AMA' when a patient leaves the hospital means:",
+   options:["Against Medical Advice","American Medical Association","Advanced Medical Assistance","Acute Medical Alert"], answer:0, explanation:"AMA = Against Medical Advice."},
+  {category:"Administrative", question:"When a patient leaves AMA, the medical assistant should:",
+   options:["Document the event and have the patient sign a form","Physically restrain the patient","Call police","Ignore"], answer:0, explanation:"Document and have patient sign AMA form."},
+  {category:"Administrative", question:"A medical assistant's scope of practice is determined by:",
+   options:["State law and employer policy","Personal preference","Patient request","Insurance company"], answer:0, explanation:"Scope of practice is set by state law and employer."},
+  {category:"Administrative", question:"A medical assistant should perform only:",
+   options:["Tasks within their scope of practice","Any task requested","Only physician tasks","Only nursing tasks"], answer:0, explanation:"Only tasks within scope of practice."},
+  {category:"Administrative", question:"The abbreviation 'CMA' stands for:",
+   options:["Certified Medical Assistant","Clinical Medical Assistant","Certified Medical Aide","Clinical Medical Aide"], answer:0, explanation:"CMA = Certified Medical Assistant."},
+  {category:"Administrative", question:"The abbreviation 'RMA' stands for:",
+   options:["Registered Medical Assistant","Certified Medical Assistant","Clinical Medical Assistant","Registered Medical Aide"], answer:0, explanation:"RMA = Registered Medical Assistant."},
+  {category:"Administrative", question:"The abbreviation 'CCMA' stands for:",
+   options:["Certified Clinical Medical Assistant","Certified Medical Assistant","Clinical Medical Assistant","Certified Clinical Aide"], answer:0, explanation:"CCMA = Certified Clinical Medical Assistant."},
+  {category:"Administrative", question:"Continuing education units (CEUs) are required to:",
+   options:["Maintain certification","Get a raise","Get a promotion","Change jobs"], answer:0, explanation:"CEUs maintain certification."},
+  {category:"Administrative", question:"A medical assistant should maintain:",
+   options:["Patient confidentiality at all times","Gossip about patients","Discuss patients in public","Share patient info with friends"], answer:0, explanation:"Confidentiality is always required."},
+  {category:"Administrative", question:"When speaking with a patient, the medical assistant should:",
+   options:["Use clear, simple language","Use medical jargon","Speak quickly","Ignore questions"], answer:0, explanation:"Use clear, simple language."},
+  {category:"Administrative", question:"A patient who is angry should be:",
+   options:["Listened to and calmed","Ignored","Argued with","Removed"], answer:0, explanation:"Listen and calm the patient."},
+  {category:"Administrative", question:"A patient who is hearing impaired should be:",
+   options:["Spoken to clearly with visual cues","Ignored","Yelled at","Written off"], answer:0, explanation:"Use clear speech and visual cues."},
+  {category:"Administrative", question:"A patient who speaks limited English should be:",
+   options:["Provided with an interpreter","Ignored","Spoken to louder","Treated without consent"], answer:0, explanation:"Provide an interpreter."},
+  {category:"Administrative", question:"When a patient refuses treatment, the medical assistant should:",
+   options:["Document the refusal","Force treatment","Ignore the patient","Call police"], answer:0, explanation:"Document the refusal."},
+  {category:"Administrative", question:"The abbreviation 'NKA' means:",
+   options:["No known allergies","New kidney assignment","Normal kidney activity","No known asthma"], answer:0, explanation:"NKA = No Known Allergies."},
+  {category:"Administrative", question:"The abbreviation 'NKDA' means:",
+   options:["No known drug allergies","New kidney drug assignment","Normal kidney drug activity","No known dietary allergies"], answer:0, explanation:"NKDA = No Known Drug Allergies."},
+  {category:"Administrative", question:"A patient's allergy list should be:",
+   options:["Updated at every visit","Updated once","Ignored","Only updated when patient mentions"], answer:0, explanation:"Update allergies every visit."},
+  {category:"Administrative", question:"The abbreviation 'CC' in a medical record means:",
+   options:["Chief complaint","Current condition","Cardiac care","Clinical concern"], answer:0, explanation:"CC = Chief Complaint."},
+  {category:"Administrative", question:"The abbreviation 'HPI' means:",
+   options:["History of present illness","Health patient information","Hospital patient intake","History of patient injury"], answer:0, explanation:"HPI = History of Present Illness."},
+  {category:"Administrative", question:"The abbreviation 'PMH' means:",
+   options:["Past medical history","Present medical history","Patient medical history","Personal medical history"], answer:0, explanation:"PMH = Past Medical History."},
+  {category:"Administrative", question:"The abbreviation 'FH' means:",
+   options:["Family history","Full history","First health","Final health"], answer:0, explanation:"FH = Family History."},
+  {category:"Administrative", question:"The abbreviation 'SH' means:",
+   options:["Social history","Surgical history","Standard health","Special health"], answer:0, explanation:"SH = Social History."},
+  {category:"Administrative", question:"The abbreviation 'ROS' means:",
+   options:["Review of systems","Report of symptoms","Rate of sickness","Record of surgery"], answer:0, explanation:"ROS = Review of Systems."},
+  {category:"Administrative", question:"The abbreviation 'PE' means:",
+   options:["Physical examination","Patient evaluation","Personal exam","Primary exam"], answer:0, explanation:"PE = Physical Examination."},
+  {category:"Administrative", question:"The abbreviation 'VS' means:",
+   options:["Vital signs","Visual signs","Vascular signs","Vocal signs"], answer:0, explanation:"VS = Vital Signs."},
+  {category:"Administrative", question:"The abbreviation 'WNL' means:",
+   options:["Within normal limits","Without normal limits","With normal levels","Without normal levels"], answer:0, explanation:"WNL = Within Normal Limits."},
+  {category:"Administrative", question:"The abbreviation 'NAD' means:",
+   options:["No acute distress","No apparent disease","Normal active disease","New acute diagnosis"], answer:0, explanation:"NAD = No Acute Distress."},
+  {category:"Administrative", question:"The abbreviation 'PERRLA' is used for:",
+   options:["Eye exam","Ear exam","Nose exam","Throat exam"], answer:0, explanation:"PERRLA is used in eye exams."},
+  {category:"Administrative", question:"PERRLA stands for:",
+   options:["Pupils Equal, Round, Reactive to Light and Accommodation","Pupils Enlarged, Round, Reactive to Light and Accommodation","Pupils Equal, Round, Responsive to Light and Accommodation","Pupils Equal, Round, Reactive to Light and Area"], answer:0, explanation:"PERRLA = Pupils Equal, Round, Reactive to Light and Accommodation."},
+  {category:"Administrative", question:"The abbreviation 'TM' means:",
+   options:["Tympanic membrane","Temperature","Treatment method","Total medication"], answer:0, explanation:"TM = Tympanic Membrane (eardrum)."},
+  {category:"Administrative", question:"The abbreviation 'URI' means:",
+   options:["Upper respiratory infection","Urinary tract infection","Upper renal infection","Universal respiratory infection"], answer:0, explanation:"URI = Upper Respiratory Infection."},
+  {category:"Administrative", question:"The abbreviation 'UTI' means:",
+   options:["Urinary tract infection","Upper tract infection","Universal tract infection","Urgent tract infection"], answer:0, explanation:"UTI = Urinary Tract Infection."},
+  {category:"Administrative", question:"The abbreviation 'CVA' means:",
+   options:["Cerebrovascular accident","Cardiovascular accident","Central vascular accident","Cerebral vascular attack"], answer:0, explanation:"CVA = Cerebrovascular Accident (stroke)."},
+  {category:"Administrative", question:"The abbreviation 'MI' means:",
+   options:["Myocardial infarction","Medical inspection","Muscle injury","Minor infection"], answer:0, explanation:"MI = Myocardial Infarction (heart attack)."},
+  {category:"Administrative", question:"The abbreviation 'CHF' means:",
+   options:["Congestive heart failure","Chronic heart failure","Cardiac heart failure","Central heart failure"], answer:0, explanation:"CHF = Congestive Heart Failure."},
+  {category:"Administrative", question:"The abbreviation 'COPD' means:",
+   options:["Chronic obstructive pulmonary disease","Chronic obstructive pulmonary disorder","Central obstructive pulmonary disease","Chronic obstructive pulmonary disorder"], answer:0, explanation:"COPD = Chronic Obstructive Pulmonary Disease."},
+  {category:"Administrative", question:"The abbreviation 'DM' means:",
+   options:["Diabetes mellitus","Diabetic management","Disease management","Diagnostic medicine"], answer:0, explanation:"DM = Diabetes Mellitus."},
+  {category:"Administrative", question:"The abbreviation 'HTN' means:",
+   options:["Hypertension","Hypotension","Hyperthyroidism","Hypothyroidism"], answer:0, explanation:"HTN = Hypertension."},
+  {category:"Administrative", question:"The abbreviation 'CBC' means:",
+   options:["Complete blood count","Complete blood chemistry","Central blood count","Cardiac blood count"], answer:0, explanation:"CBC = Complete Blood Count."},
+  {category:"Administrative", question:"The abbreviation 'BMP' means:",
+   options:["Basic metabolic panel","Blood metabolic panel","Basic medical panel","Blood medical panel"], answer:0, explanation:"BMP = Basic Metabolic Panel."},
+  {category:"Administrative", question:"The abbreviation 'CMP' means:",
+   options:["Comprehensive metabolic panel","Complete metabolic panel","Central metabolic panel","Cardiac metabolic panel"], answer:0, explanation:"CMP = Comprehensive Metabolic Panel."},
+  {category:"Administrative", question:"The abbreviation 'LFT' means:",
+   options:["Liver function test","Lung function test","Lymph function test","Lipid function test"], answer:0, explanation:"LFT = Liver Function Test."},
+  {category:"Administrative", question:"The abbreviation 'TSH' means:",
+   options:["Thyroid stimulating hormone","Total serum hormone","Thyroid serum hormone","Total stimulating hormone"], answer:0, explanation:"TSH = Thyroid Stimulating Hormone."},
+  {category:"Administrative", question:"The abbreviation 'PSA' means:",
+   options:["Prostate-specific antigen","Prostate serum antigen","Protein-specific antigen","Prostate-specific antibody"], answer:0, explanation:"PSA = Prostate-Specific Antigen."},
+  {category:"Administrative", question:"The abbreviation 'Pap' means:",
+   options:["Papanicolaou test","Papillary test","Papule test","Papilloma test"], answer:0, explanation:"Pap = Papanicolaou test (cervical cancer screening)."},
+  {category:"Administrative", question:"The abbreviation 'STI' means:",
+   options:["Sexually transmitted infection","Standard treatment infection","Systemic tissue infection","Severe tissue infection"], answer:0, explanation:"STI = Sexually Transmitted Infection."},
+  {category:"Administrative", question:"The abbreviation 'STD' means:",
+   options:["Sexually transmitted disease","Standard treatment disease","Systemic tissue disease","Severe tissue disease"], answer:0, explanation:"STD = Sexually Transmitted Disease."},
+  {category:"Administrative", question:"The abbreviation 'BSE' means:",
+   options:["Breast self-examination","Blood serum exam","Basic skin exam","Bone scan exam"], answer:0, explanation:"BSE = Breast Self-Examination."},
+  {category:"Administrative", question:"The abbreviation 'TSE' means:",
+   options:["Testicular self-examination","Thyroid self-examination","Tissue self-examination","Tumor self-examination"], answer:0, explanation:"TSE = Testicular Self-Examination."},
+  {category:"Administrative", question:"The abbreviation 'I&D' means:",
+   options:["Incision and drainage","Inspection and diagnosis","Infection and disease","Injury and damage"], answer:0, explanation:"I&D = Incision and Drainage."},
+  {category:"Administrative", question:"The abbreviation 'OR' means:",
+   options:["Operating room","Office record","Official report","Oral route"], answer:0, explanation:"OR = Operating Room."},
+  {category:"Administrative", question:"The abbreviation 'ER' means:",
+   options:["Emergency room","External review","Essential record","Ear route"], answer:0, explanation:"ER = Emergency Room."},
+  {category:"Administrative", question:"The abbreviation 'ICU' means:",
+   options:["Intensive care unit","Internal care unit","Intermediate care unit","Intensive cardiac unit"], answer:0, explanation:"ICU = Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'NICU' means:",
+   options:["Neonatal intensive care unit","Neurological intensive care unit","Nursing intensive care unit","Nutritional intensive care unit"], answer:0, explanation:"NICU = Neonatal Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'CCU' means:",
+   options:["Coronary care unit","Cardiac care unit","Critical care unit","Both A and B"], answer:3, explanation:"CCU = Coronary/Cardiac Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'L&D' means:",
+   options:["Labor and delivery","Laceration and drainage","Lesion and disease","Lymph and drainage"], answer:0, explanation:"L&D = Labor and Delivery."},
+  {category:"Administrative", question:"The abbreviation 'PACU' means:",
+   options:["Post-anesthesia care unit","Pre-anesthesia care unit","Post-acute care unit","Pre-acute care unit"], answer:0, explanation:"PACU = Post-Anesthesia Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'NPO' means:",
+   options:["Nothing by mouth","Normal physical output","New patient order","No pain observed"], answer:0, explanation:"NPO = Nothing by mouth."},
+  {category:"Administrative", question:"The abbreviation 'NG' means:",
+   options:["Nasogastric","Natural growth","Normal glucose","New growth"], answer:0, explanation:"NG = Nasogastric."},
+  {category:"Administrative", question:"The abbreviation 'TPN' means:",
+   options:["Total parenteral nutrition","Total patient nutrition","Total protein nutrition","Total peripheral nutrition"], answer:0, explanation:"TPN = Total Parenteral Nutrition."},
+  {category:"Administrative", question:"The abbreviation 'IV' means:",
+   options:["Intravenous","Intramuscular","Intradermal","Intraosseous"], answer:0, explanation:"IV = Intravenous."},
+  {category:"Administrative", question:"The abbreviation 'IM' means:",
+   options:["Intramuscular","Intravenous","Intradermal","Intraosseous"], answer:0, explanation:"IM = Intramuscular."},
+  {category:"Administrative", question:"The abbreviation 'SC' or 'SQ' means:",
+   options:["Subcutaneous","Sublingual","Systemic","Superficial"], answer:0, explanation:"SC/SQ = Subcutaneous."},
+  {category:"Administrative", question:"The abbreviation 'SL' means:",
+   options:["Sublingual","Subcutaneous","Systemic","Superficial"], answer:0, explanation:"SL = Sublingual (under the tongue)."},
+  {category:"Administrative", question:"The abbreviation 'ID' means:",
+   options:["Intradermal","Intramuscular","Intravenous","Intraosseous"], answer:0, explanation:"ID = Intradermal."},
+  {category:"Administrative", question:"The abbreviation 'GT' means:",
+   options:["Gastrostomy tube","General treatment","Glucose test","Growth test"], answer:0, explanation:"GT = Gastrostomy Tube."},
+  {category:"Administrative", question:"The abbreviation 'ET' means:",
+   options:["Endotracheal tube","External treatment","Emergency treatment","Essential therapy"], answer:0, explanation:"ET = Endotracheal Tube."},
+  {category:"Administrative", question:"The abbreviation 'C&S' means:",
+   options:["Culture and sensitivity","Care and support","Chemical and solution","Clinical and standard"], answer:0, explanation:"C&S = Culture and Sensitivity."},
+  {category:"Administrative", question:"The abbreviation 'GU' means:",
+   options:["Genitourinary","Gastrointestinal","General urinary","Gynecological urinary"], answer:0, explanation:"GU = Genitourinary."},
+  {category:"Administrative", question:"The abbreviation 'GI' means:",
+   options:["Gastrointestinal","Genitourinary","General internal","Gynecological internal"], answer:0, explanation:"GI = Gastrointestinal."},
+  {category:"Administrative", question:"The abbreviation 'OB' means:",
+   options:["Obstetrics","Orthopedics","Oncology","Ophthalmology"], answer:0, explanation:"OB = Obstetrics."},
+  {category:"Administrative", question:"The abbreviation 'GYN' means:",
+   options:["Gynecology","Gastroenterology","Gerontology","Genetics"], answer:0, explanation:"GYN = Gynecology."},
+  {category:"Administrative", question:"The abbreviation 'ENT' means:",
+   options:["Ear, nose, and throat","Emergency nutrition therapy","Endocrine nutrition therapy","Emergency neurological treatment"], answer:0, explanation:"ENT = Ear, Nose, and Throat."},
+  {category:"Administrative", question:"The abbreviation 'Ortho' means:",
+   options:["Orthopedics","Orthodontics","Orthotics","Orthopnea"], answer:0, explanation:"Ortho = Orthopedics."},
+  {category:"Administrative", question:"The abbreviation 'Peds' means:",
+   options:["Pediatrics","Podiatry","Psychiatry","Pathology"], answer:0, explanation:"Peds = Pediatrics."},
+  {category:"Administrative", question:"The abbreviation 'Psych' means:",
+   options:["Psychiatry","Psychology","Psychotherapy","All of the above"], answer:3, explanation:"Psych can refer to all mental health fields."},
+  {category:"Administrative", question:"The abbreviation 'Derm' means:",
+   options:["Dermatology","Dentistry","Dermatitis","Dermatome"], answer:0, explanation:"Derm = Dermatology."},
+  {category:"Administrative", question:"The abbreviation 'Cardio' means:",
+   options:["Cardiology","Cardiac surgery","Cardiovascular","All of the above"], answer:3, explanation:"Cardio relates to the heart."},
+  {category:"Administrative", question:"The abbreviation 'Neuro' means:",
+   options:["Neurology","Neurosurgery","Neuroscience","All of the above"], answer:3, explanation:"Neuro relates to the nervous system."},
+  {category:"Administrative", question:"The abbreviation 'Onc' means:",
+   options:["Oncology","Ophthalmology","Orthopedics","Otolaryngology"], answer:0, explanation:"Onc = Oncology (cancer)."},
+  {category:"Administrative", question:"The abbreviation 'Ophth' means:",
+   options:["Ophthalmology","Oncology","Orthopedics","Otolaryngology"], answer:0, explanation:"Ophth = Ophthalmology (eyes)."},
+  {category:"Administrative", question:"The abbreviation 'Urol' means:",
+   options:["Urology","Oncology","Orthopedics","Otolaryngology"], answer:0, explanation:"Urol = Urology."},
+  {category:"Administrative", question:"The abbreviation 'Rheum' means:",
+   options:["Rheumatology","Respiratory","Renal","Reproductive"], answer:0, explanation:"Rheum = Rheumatology."},
+  {category:"Administrative", question:"The abbreviation 'Endo' means:",
+   options:["Endocrinology","Endoscopy","Endocardium","All of the above"], answer:3, explanation:"Endo can refer to all of these."},
+  {category:"Administrative", question:"The abbreviation 'Heme' means:",
+   options:["Hematology","Hematoma","Hemoglobin","Hemorrhage"], answer:0, explanation:"Heme = Hematology (blood)."},
+  {category:"Administrative", question:"The abbreviation 'Path' means:",
+   options:["Pathology","Patient","Pattern","Patch"], answer:0, explanation:"Path = Pathology."},
+  {category:"Administrative", question:"The abbreviation 'Rad' means:",
+   options:["Radiology","Radiation","Radial","All of the above"], answer:3, explanation:"Rad can refer to all of these."},
+  {category:"Administrative", question:"The abbreviation 'Anes' means:",
+   options:["Anesthesiology","Analgesic","Anemia","Aneurysm"], answer:0, explanation:"Anes = Anesthesiology."},
+  {category:"Administrative", question:"The abbreviation 'Fam Med' means:",
+   options:["Family Medicine","Famous Medicine","Fatal Medicine","Fast Medicine"], answer:0, explanation:"Fam Med = Family Medicine."},
+  {category:"Administrative", question:"The abbreviation 'Int Med' means:",
+   options:["Internal Medicine","Intensive Medicine","Integrative Medicine","Intermediate Medicine"], answer:0, explanation:"Int Med = Internal Medicine."},
+  {category:"Administrative", question:"The abbreviation 'Gen Prac' means:",
+   options:["General Practice","General Practitioner","Generic Practice","General Procedure"], answer:0, explanation:"Gen Prac = General Practice."},
+  {category:"Administrative", question:"The abbreviation 'FP' means:",
+   options:["Family Practice","Full Practice","First Practice","Final Practice"], answer:0, explanation:"FP = Family Practice."},
+  {category:"Administrative", question:"The abbreviation 'IM' as a specialty means:",
+   options:["Internal Medicine","Intramuscular","Intensive Medicine","Integrative Medicine"], answer:0, explanation:"IM can mean Internal Medicine (context-dependent)."},
+  {category:"Administrative", question:"The abbreviation 'GS' means:",
+   options:["General Surgery","General Specialist","General Service","General Study"], answer:0, explanation:"GS = General Surgery."},
+  {category:"Administrative", question:"The abbreviation 'OB/GYN' means:",
+   options:["Obstetrics and Gynecology","Orthopedics and Gynecology","Oncology and Gynecology","Ophthalmology and Gynecology"], answer:0, explanation:"OB/GYN = Obstetrics and Gynecology."},
+  {category:"Administrative", question:"The abbreviation 'PCP' means:",
+   options:["Primary Care Physician","Primary Care Provider","Both A and B","Personal Care Physician"], answer:2, explanation:"PCP = Primary Care Physician/Provider."},
+  {category:"Administrative", question:"The abbreviation 'PA' means:",
+   options:["Physician Assistant","Physician Associate","Both A and B","Personal Assistant"], answer:2, explanation:"PA = Physician Assistant/Associate."},
+  {category:"Administrative", question:"The abbreviation 'NP' means:",
+   options:["Nurse Practitioner","Nurse Physician","Nursing Professional","Nurse Professional"], answer:0, explanation:"NP = Nurse Practitioner."},
+  {category:"Administrative", question:"The abbreviation 'RN' means:",
+   options:["Registered Nurse","Registered Nutritionist","Regional Nurse","Resident Nurse"], answer:0, explanation:"RN = Registered Nurse."},
+  {category:"Administrative", question:"The abbreviation 'LPN' means:",
+   options:["Licensed Practical Nurse","Licensed Professional Nurse","Licensed Primary Nurse","Licensed Patient Nurse"], answer:0, explanation:"LPN = Licensed Practical Nurse."},
+  {category:"Administrative", question:"The abbreviation 'LVN' means:",
+   options:["Licensed Vocational Nurse","Licensed Visiting Nurse","Licensed Volunteer Nurse","Licensed Vascular Nurse"], answer:0, explanation:"LVN = Licensed Vocational Nurse."},
+  {category:"Administrative", question:"The abbreviation 'CNA' means:",
+   options:["Certified Nursing Assistant","Certified Nurse Aide","Both A and B","Clinical Nursing Assistant"], answer:2, explanation:"CNA = Certified Nursing Assistant/Aide."},
+  {category:"Administrative", question:"The abbreviation 'MA' means:",
+   options:["Medical Assistant","Medical Aide","Medical Associate","All of the above"], answer:3, explanation:"MA = Medical Assistant (various titles)."},
+  {category:"Administrative", question:"The abbreviation 'DO' means:",
+   options:["Doctor of Osteopathy","Doctor of Optometry","Doctor of Oncology","Doctor of Orthopedics"], answer:0, explanation:"DO = Doctor of Osteopathy."},
+  {category:"Administrative", question:"The abbreviation 'MD' means:",
+   options:["Medical Doctor","Doctor of Medicine","Both A and B","Medical Director"], answer:2, explanation:"MD = Medical Doctor/Doctor of Medicine."},
+  {category:"Administrative", question:"The abbreviation 'DC' means:",
+   options:["Doctor of Chiropractic","Doctor of Cardiology","Doctor of Care","Doctor of Clinical"], answer:0, explanation:"DC = Doctor of Chiropractic."},
+  {category:"Administrative", question:"The abbreviation 'DDS' means:",
+   options:["Doctor of Dental Surgery","Doctor of Dental Science","Doctor of Dental Studies","Doctor of Dental Specialty"], answer:0, explanation:"DDS = Doctor of Dental Surgery."},
+  {category:"Administrative", question:"The abbreviation 'DMD' means:",
+   options:["Doctor of Medicine in Dentistry","Doctor of Dental Medicine","Both A and B","Doctor of Medical Dentistry"], answer:2, explanation:"DMD = Doctor of Medicine in Dentistry/Dental Medicine."},
+  {category:"Administrative", question:"The abbreviation 'OD' means:",
+   options:["Doctor of Optometry","Doctor of Osteopathy","Doctor of Oncology","Doctor of Orthopedics"], answer:0, explanation:"OD = Doctor of Optometry."},
+  {category:"Administrative", question:"The abbreviation 'PharmD' means:",
+   options:["Doctor of Pharmacy","Doctor of Pharmacology","Doctor of Pharmaceutical","Doctor of Pharmacy Practice"], answer:0, explanation:"PharmD = Doctor of Pharmacy."},
+  {category:"Administrative", question:"The abbreviation 'DVM' means:",
+   options:["Doctor of Veterinary Medicine","Doctor of Veterinary Management","Doctor of Vascular Medicine","Doctor of Vision Medicine"], answer:0, explanation:"DVM = Doctor of Veterinary Medicine."},
+  {category:"Administrative", question:"The abbreviation 'PT' means:",
+   options:["Physical Therapist","Physical Therapy","Both A and B","Patient Treatment"], answer:2, explanation:"PT = Physical Therapist/Therapy."},
+  {category:"Administrative", question:"The abbreviation 'OT' means:",
+   options:["Occupational Therapist","Occupational Therapy","Both A and B","Orthopedic Treatment"], answer:2, explanation:"OT = Occupational Therapist/Therapy."},
+  {category:"Administrative", question:"The abbreviation 'ST' means:",
+   options:["Speech Therapist","Speech Therapy","Both A and B","Surgical Technician"], answer:2, explanation:"ST = Speech Therapist/Therapy."},
+  {category:"Administrative", question:"The abbreviation 'RT' means:",
+   options:["Respiratory Therapist","Radiation Therapist","Both A and B","Recreational Therapist"], answer:2, explanation:"RT = Respiratory/Radiation Therapist."},
+  {category:"Administrative", question:"The abbreviation 'RD' means:",
+   options:["Registered Dietitian","Registered Dietician","Both A and B","Registered Nutritionist"], answer:2, explanation:"RD = Registered Dietitian."},
+  {category:"Administrative", question:"The abbreviation 'MSW' means:",
+   options:["Master of Social Work","Medical Social Worker","Both A and B","Master of Social Welfare"], answer:2, explanation:"MSW = Master of Social Work/Medical Social Worker."},
+  {category:"Administrative", question:"The abbreviation 'LCSW' means:",
+   options:["Licensed Clinical Social Worker","Licensed Certified Social Worker","Licensed Community Social Worker","Licensed Clinical Service Worker"], answer:0, explanation:"LCSW = Licensed Clinical Social Worker."},
+  {category:"Administrative", question:"The abbreviation 'EMT' means:",
+   options:["Emergency Medical Technician","Emergency Medical Transport","Emergency Medical Treatment","Emergency Medical Team"], answer:0, explanation:"EMT = Emergency Medical Technician."},
+  {category:"Administrative", question:"The abbreviation 'EMS' means:",
+   options:["Emergency Medical Services","Emergency Medical System","Both A and B","Emergency Medical Squad"], answer:2, explanation:"EMS = Emergency Medical Services/System."},
+  {category:"Administrative", question:"The abbreviation 'ER' means:",
+   options:["Emergency Room","Emergency Response","Emergency Rescue","Emergency Relief"], answer:0, explanation:"ER = Emergency Room."},
+  {category:"Administrative", question:"The abbreviation 'ED' means:",
+   options:["Emergency Department","Emergency Doctor","Emergency Diagnosis","Emergency Discharge"], answer:0, explanation:"ED = Emergency Department."},
+  {category:"Administrative", question:"The abbreviation 'ICU' means:",
+   options:["Intensive Care Unit","Intermediate Care Unit","Internal Care Unit","Intensive Cardiac Unit"], answer:0, explanation:"ICU = Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'CCU' means:",
+   options:["Coronary Care Unit","Cardiac Care Unit","Critical Care Unit","All of the above"], answer:3, explanation:"CCU can mean all of these."},
+  {category:"Administrative", question:"The abbreviation 'NICU' means:",
+   options:["Neonatal Intensive Care Unit","Neurological Intensive Care Unit","Nursing Intensive Care Unit","Nutritional Intensive Care Unit"], answer:0, explanation:"NICU = Neonatal Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'PICU' means:",
+   options:["Pediatric Intensive Care Unit","Psychiatric Intensive Care Unit","Pulmonary Intensive Care Unit","Primary Intensive Care Unit"], answer:0, explanation:"PICU = Pediatric Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'SICU' means:",
+   options:["Surgical Intensive Care Unit","Special Intensive Care Unit","Standard Intensive Care Unit","Senior Intensive Care Unit"], answer:0, explanation:"SICU = Surgical Intensive Care Unit."},
+  {category:"Administrative", question:"The abbreviation 'MICU' means:",
+   options:["Medical Intensive Care Unit","Mobile Intensive Care Unit","Both A and B","Major Intensive Care Unit"], answer:2, explanation:"MICU = Medical/Mobile Intensive Care Unit."}
+];
+
+/* ============================================================
+   APP LOGIC
+   ============================================================ */
+const STORAGE_KEY = 'preNoctiState_v1';
+const $ = (id) => document.getElementById(id);
+
+let state = {
+  questions: [],
+  current: 0,
+  answers: [], // index of chosen option, or null
+  mode: 'all',
+  category: ''
+};
+
+/* ---------- Init ---------- */
+function init() {
+  $('year').textContent = new Date().getFullYear();
+  populateCategories();
+  restoreState();
+  bindEvents();
+}
+
+function populateCategories() {
+  const cats = [...new Set(QUESTIONS.map(q => q.category))].sort();
+  const sel = $('category-select');
+  cats.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+function bindEvents() {
+  $('mode-select').addEventListener('change', (e) => {
+    $('category-select').classList.toggle('hidden', e.target.value !== 'category');
+  });
+  $('start-btn').addEventListener('click', startTest);
+  $('reset-btn').addEventListener('click', resetProgress);
+  $('prev-btn').addEventListener('click', () => navigate(-1));
+  $('next-btn').addEventListener('click', () => navigate(1));
+  $('finish-btn').addEventListener('click', finishTest);
+  $('retry-btn').addEventListener('click', () => { clearSaved(); startTest(); });
+  $('home-btn').addEventListener('click', goHome);
+}
+
+/* ---------- Test setup ---------- */
+function startTest() {
+  const mode = $('mode-select').value;
+  const category = $('category-select').value;
+  state.mode = mode;
+  state.category = category;
+
+  let pool;
+  if (mode === 'category' && category) {
+    pool = QUESTIONS.filter(q => q.category === category);
+  } else if (mode === 'all' || mode === 'category') {
+    pool = [...QUESTIONS];
+  } else {
+    const n = parseInt(mode, 10);
+    pool = shuffle([...QUESTIONS]).slice(0, n);
+  }
+
+  state.questions = pool;
+  state.current = 0;
+  state.answers = new Array(pool.length).fill(null);
+
+  saveState();
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+/* ---------- Rendering ---------- */
+function renderQuestion() {
+  const q = state.questions[state.current];
+  if (!q) return;
+
+  $('stat-q').textContent = state.current + 1;
+  $('stat-total').textContent = state.questions.length;
+  const correct = state.answers.filter((a, i) => a === state.questions[i].answer).length;
+  $('stat-correct').textContent = correct;
+  const answeredCount = state.answers.filter(a => a !== null).length;
+  $('stat-score').textContent = answeredCount ? Math.round((correct / answeredCount) * 100) + '%' : '0%';
+  $('progress-fill').style.width = ((state.current + 1) / state.questions.length * 100) + '%';
+
+  $('q-category').textContent = q.category;
+  $('q-text').textContent = q.question;
+
+  const ul = $('q-options');
+  ul.innerHTML = '';
+  const chosen = state.answers[state.current];
+
+  q.options.forEach((opt, idx) => {
+    const li = document.createElement('li');
+    li.className = 'option';
+    if (chosen !== null) {
+      li.classList.add('disabled');
+      if (idx === q.answer) li.classList.add('correct');
+      if (idx === chosen && chosen !== q.answer) li.classList.add('incorrect');
+    } else if (chosen === idx) {
+      li.classList.add('selected');
+    }
+    li.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + idx)}.</span><span>${escapeHtml(opt)}</span>`;
+    if (chosen === null) li.addEventListener('click', () => selectAnswer(idx));
+    ul.appendChild(li);
+  });
+
+  // Feedback
+  const fb = $('q-feedback');
+  if (chosen !== null) {
+    fb.className = 'feedback show ' + (chosen === q.answer ? 'correct' : 'incorrect');
+    fb.innerHTML = `<strong>${chosen === q.answer ? '✅ Correct!' : '❌ Incorrect'}</strong>${escapeHtml(q.explanation)}`;
+  } else {
+    fb.className = 'feedback';
+    fb.innerHTML = '';
+  }
+
+  $('prev-btn').disabled = state.current === 0;
+  const isLast = state.current === state.questions.length - 1;
+  $('next-btn').classList.toggle('hidden', isLast);
+  $('finish-btn').classList.toggle('hidden', !isLast);
+}
+
+function selectAnswer(idx) {
+  state.answers[state.current] = idx;
+  saveState();
+  renderQuestion();
+}
+
+function navigate(dir) {
+  const next = state.current + dir;
+  if (next < 0 || next >= state.questions.length) return;
+  state.current = next;
+  saveState();
+  renderQuestion();
+}
+
+/* ---------- Finish ---------- */
+function finishTest() {
+  const total = state.questions.length;
+  const correct = state.answers.filter((a, i) => a === state.questions[i].answer).length;
+  const wrong = total - correct;
+  const pct = Math.round((correct / total) * 100);
+
+  $('final-score').textContent = pct + '%';
+  $('final-score').className = 'score ' + (pct >= 70 ? 'pass' : 'fail');
+  $('final-message').textContent = pct >= 70
+    ? 'Great job! You are on track. Review any missed questions below.'
+    : 'Keep studying! Review the missed questions below and try again.';
+  $('final-correct').textContent = correct;
+  $('final-wrong').textContent = wrong;
+  $('final-total').textContent = total;
+
+  const list = $('review-list');
+  list.innerHTML = '';
+  state.questions.forEach((q, i) => {
+    const userAns = state.answers[i];
+    const isCorrect = userAns === q.answer;
+    const div = document.createElement('div');
+    div.className = 'review-item' + (isCorrect ? ' correct' : '');
+    const userLetter = userAns !== null ? String.fromCharCode(65 + userAns) : '—';
+    const correctLetter = String.fromCharCode(65 + q.answer);
+    div.innerHTML = `
+      <div class="q">${i + 1}. ${escapeHtml(q.question)}</div>
+      <div class="a">
+        Your answer: <strong>${userLetter}</strong> ${userAns !== null ? '— ' + escapeHtml(q.options[userAns]) : ''}<br>
+        Correct answer: <strong>${correctLetter}</strong> — ${escapeHtml(q.options[q.answer])}<br>
+        <em>${escapeHtml(q.explanation)}</em>
+      </div>`;
+    list.appendChild(div);
+  });
+
+  saveState();
+  showScreen('results-screen');
+}
+
+/* ---------- Screens ---------- */
+function showScreen(id) {
+  ['start-screen', 'quiz-screen', 'results-screen'].forEach(s => {
+    $(s).classList.toggle('hidden', s !== id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goHome() {
+  showScreen('start-screen');
+  updateSavedInfo();
+}
+
+/* ---------- Persistence ---------- */
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      mode: state.mode,
+      category: state.category,
+      questions: state.questions,
+      current: state.current,
+      answers: state.answers
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+function restoreState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) { updateSavedInfo(); return; }
+    const saved = JSON.parse(raw);
+    if (!saved.questions || !saved.questions.length) { updateSavedInfo(); return; }
+    state.mode = saved.mode || 'all';
+    state.category = saved.category || '';
+    state.questions = saved.questions;
+    state.current = saved.current || 0;
+    state.answers = saved.answers || new Array(saved.questions.length).fill(null);
+    updateSavedInfo(true);
+  } catch (e) { /* ignore */ }
+}
+
+function clearSaved() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
+function resetProgress() {
+  if (!confirm('Reset all saved progress?')) return;
+  clearSaved();
+  state = { questions: [], current: 0, answers: [], mode: 'all', category: '' };
+  updateSavedInfo();
+  alert('Saved progress cleared.');
+}
+
+function updateSavedInfo(hasSaved) {
+  if (!hasSaved) {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    hasSaved = !!raw;
+  }
+  if (hasSaved) {
+    $('saved-info').textContent = '💾 Saved progress found. Click "Start Test" to resume, or "Reset Saved Progress" to start fresh.';
+  } else {
+    $('saved-info').textContent = '';
+  }
+}
+
+/* ---------- Helpers ---------- */
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
